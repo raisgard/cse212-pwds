@@ -1,33 +1,84 @@
 public static class Arrays
 {
-    /// <summary>
-    /// This function will produce an array of size 'length' starting with 'number' followed by multiples of 'number'.  For 
-    /// example, MultiplesOf(7, 5) will result in: {7, 14, 21, 28, 35}.  Assume that length is a positive
-    /// integer greater than 0.
-    /// </summary>
-    /// <returns>array of doubles that are the multiples of the supplied number</returns>
-    public static double[] MultiplesOf(double number, int length)
+    public static void Run()
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // PART 1: MultiplesOf examples
+        double[] example1 = MultiplesOf(3, 5);
+        Console.Write("MultiplesOf(3, 5) = ");
+        foreach (var num in example1)
+        {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine();
 
-        return []; // replace this return statement with your own
+        double[] example2 = MultiplesOf(4, 6);
+        Console.Write("MultiplesOf(4, 6) = ");
+        foreach (var num in example2)
+        {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine();
+
+        // PART 2: RotateListRight examples
+        var listA = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        Console.WriteLine("Before rotate by 5: " + string.Join(" ", listA));
+        RotateListRight(listA, 5);
+        Console.WriteLine("After rotate by 5: " + string.Join(" ", listA));
+
+        var listB = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        Console.WriteLine("Before rotate by 3: " + string.Join(" ", listB));
+        RotateListRight(listB, 3);
+        Console.WriteLine("After rotate by 3: " + string.Join(" ", listB));
     }
 
-    /// <summary>
-    /// Rotate the 'data' to the right by the 'amount'.  For example, if the data is 
-    /// List<int>{1, 2, 3, 4, 5, 6, 7, 8, 9} and an amount is 3 then the list after the function runs should be 
-    /// List<int>{7, 8, 9, 1, 2, 3, 4, 5, 6}.  The value of amount will be in the range of 1 to data.Count, inclusive.
-    ///
-    /// Because a list is dynamic, this function will modify the existing data list rather than returning a new list.
-    /// </summary>
+    /*
+     PLAN for MultiplesOf:
+     1. Validate the count (if <= 0, return empty array).
+     2. Create an array with the size equal to count.
+     3. Loop through from 0 to count-1.
+     4. For each index, calculate start * (i + 1).
+     5. Return the filled array.
+    */
+    public static double[] MultiplesOf(double start, int count)
+    {
+        if (count <= 0) return Array.Empty<double>();
+
+        var result = new double[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = start * (i + 1);
+        }
+        return result;
+    }
+
+    /*
+     PLAN for RotateListRight:
+     1. Validate input (null or empty list -> return).
+     2. Use modulo to normalize amount so it’s less than list size.
+     3. Create a temp array with the same size.
+     4. Loop through list:
+        - Calculate new index = (i + amount) % size.
+        - Place element in that new index.
+     5. Copy values back from temp into original list.
+    */
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        if (data == null || data.Count == 0) return;
+
+        int n = data.Count;
+        amount = amount % n;
+        if (amount == 0) return;
+
+        var temp = new int[n];
+        for (int i = 0; i < n; i++)
+        {
+            int newIndex = (i + amount) % n;
+            temp[newIndex] = data[i];
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            data[i] = temp[i];
+        }
     }
 }
