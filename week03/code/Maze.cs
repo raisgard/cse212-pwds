@@ -1,4 +1,4 @@
-/// <summary>
+/// <summary> 
 /// Defines a maze using a dictionary. The dictionary is provided by the
 /// user when the Maze object is created. The dictionary will contain the
 /// following mapping:
@@ -13,7 +13,7 @@
 ///
 /// If there is a wall, then throw an InvalidOperationException with the message "Can't go that way!".  If there is no wall,
 /// then the 'currX' and 'currY' values should be changed.
-/// </summary>
+/// </summary> 
 public class Maze
 {
     private readonly Dictionary<ValueTuple<int, int>, bool[]> _mazeMap;
@@ -33,6 +33,12 @@ public class Maze
     public void MoveLeft()
     {
         // FILL IN CODE
+        var current = (_currX, _currY);
+        if (!_mazeMap.ContainsKey(current) || !_mazeMap[current][0])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        _currX--;
     }
 
     /// <summary>
@@ -42,6 +48,12 @@ public class Maze
     public void MoveRight()
     {
         // FILL IN CODE
+        var current = (_currX, _currY);
+        if (!_mazeMap.ContainsKey(current) || !_mazeMap[current][1])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        _currX++;
     }
 
     /// <summary>
@@ -51,6 +63,12 @@ public class Maze
     public void MoveUp()
     {
         // FILL IN CODE
+        var current = (_currX, _currY);
+        if (!_mazeMap.ContainsKey(current) || !_mazeMap[current][2])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        _currY++;
     }
 
     /// <summary>
@@ -60,6 +78,12 @@ public class Maze
     public void MoveDown()
     {
         // FILL IN CODE
+        var current = (_currX, _currY);
+        if (!_mazeMap.ContainsKey(current) || !_mazeMap[current][3])
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        _currY--;
     }
 
     public string GetStatus()

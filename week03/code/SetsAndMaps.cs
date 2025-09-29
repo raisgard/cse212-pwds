@@ -20,10 +20,31 @@ public static class SetsAndMaps
     /// </summary>
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
+{
+    // TODO Problem 1 - ADD YOUR CODE HERE
+    HashSet<string> wordSet = new HashSet<string>(words);
+    List<string> result = new List<string>();
+
+    foreach (string word in words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        string reversed = new string(word.Reverse().ToArray());
+
+        // Skip words like "aa", "bb", etc.
+        if (word[0] == word[1]) continue;
+
+        // Check if reversed exists in set
+        if (wordSet.Contains(reversed))
+        {
+            // Add only once (avoid duplicates)
+            if (string.Compare(word, reversed, StringComparison.Ordinal) < 0)
+            {
+                result.Add($"{word} & {reversed}");
+            }
+        }
     }
+
+    return result.ToArray();
+}
 
     /// <summary>
     /// Read a census file and summarize the degrees (education)
@@ -37,16 +58,27 @@ public static class SetsAndMaps
     /// <param name="filename">The name of the file to read</param>
     /// <returns>fixed array of divisors</returns>
     public static Dictionary<string, int> SummarizeDegrees(string filename)
+{
+    var degrees = new Dictionary<string, int>();
+    foreach (var line in File.ReadLines(filename))
     {
-        var degrees = new Dictionary<string, int>();
-        foreach (var line in File.ReadLines(filename))
-        {
-            var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
-        }
+        var fields = line.Split(",");
+        // TODO Problem 2 - ADD YOUR CODE HERE
+        if (fields.Length < 4) continue; // skip invalid lines
 
-        return degrees;
+        string degree = fields[3].Trim();
+        if (!string.IsNullOrEmpty(degree))
+        {
+            if (degrees.ContainsKey(degree))
+                degrees[degree]++;
+            else
+                degrees[degree] = 1;
+        }
     }
+
+    return degrees;
+}
+
 
     /// <summary>
     /// Determine if 'word1' and 'word2' are anagrams.  An anagram
@@ -65,10 +97,36 @@ public static class SetsAndMaps
     /// using the [] notation.
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
-    {
-        // TODO Problem 3 - ADD YOUR CODE HERE
+{
+    // TODO Problem 3 - ADD YOUR CODE HERE
+    // Normalize: remove spaces and make lowercase
+    word1 = new string(word1.Where(char.IsLetterOrDigit).ToArray()).ToLower();
+    word2 = new string(word2.Where(char.IsLetterOrDigit).ToArray()).ToLower();
+
+    if (word1.Length != word2.Length)
         return false;
+
+    Dictionary<char, int> counts = new Dictionary<char, int>();
+
+    // Count letters in first word
+    foreach (char c in word1)
+    {
+        if (!counts.ContainsKey(c)) counts[c] = 0;
+        counts[c]++;
     }
+
+    // Subtract counts using second word
+    foreach (char c in word2)
+    {
+        if (!counts.ContainsKey(c)) return false;
+        counts[c]--;
+        if (counts[c] < 0) return false;
+    }
+
+    // All counts must be zero
+    return counts.Values.All(v => v == 0);
+}
+
 
     /// <summary>
     /// This function will read JSON (Javascript Object Notation) data from the 
